@@ -43,9 +43,9 @@
 
     <!-- Sección de industrias -->
     <div>
-      <h3 class="text-2xl font-bold text-center mb-6">
+      <h2 class="text-3xl font-bold text-center mb-6">
         Algunas de las industrias a las que prestamos servicios actualmente
-      </h3>
+      </h2>
       <div
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 justify-items-center text-center"
       >
@@ -58,7 +58,7 @@
           <img
             :src="industry.icon"
             :alt="industry.name"
-            class="w-16 h-16 mb-3"
+            class="w-30 h-30 mb-3"
           />
           <p class="font-medium text-gray-700">{{ industry.name }}</p>
         </div>
