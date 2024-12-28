@@ -72,13 +72,6 @@
             <a
               href="#"
               class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-300 md:p-0"
-              >Sobre Nosotros</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-300 md:p-0"
               >Contáctenos</a
             >
           </li>
@@ -90,4 +83,5 @@
 
 
 <script setup>
+
 </script>

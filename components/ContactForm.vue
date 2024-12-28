@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="addProject()">
     <div class="grid gap-6 mb-6 md:grid-cols-2">
       <div>
         <label
@@ -8,6 +8,7 @@
           >Primer Nombre</label
         >
         <input
+          v-model="body.firstName"
           type="text"
           id="name"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -22,6 +23,7 @@
           >Primer apellido</label
         >
         <input
+          v-model="body.lastName"
           type="text"
           id="last_name"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -36,6 +38,7 @@
           >Nombre de empresa o negocio</label
         >
         <input
+          v-model="body.companyName"
           type="text"
           id="company"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -50,11 +53,11 @@
           >Telefono de contacto</label
         >
         <input
+          v-model="body.phone"
           type="tel"
           id="phone"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="123-45-678"
-          pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
           required
         />
       </div>
@@ -65,7 +68,8 @@
           >Pais</label
         >
         <input
-          type="url"
+          v-model="body.country"
+          type="text"
           id="country"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Nombre de tu pais"
@@ -80,10 +84,11 @@
           >Email</label
         >
         <input
+          v-model="body.email"
           type="email"
           id="email"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="krys1234@@gmail.com"
+          placeholder="krys1234@gmail.com"
           required
         />
       </div>
@@ -95,6 +100,7 @@
           >Idea de tu proyecto</label
         >
         <textarea
+          v-model="body.descriptionProject"
           id="description_project"
           rows="4"
           class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -113,6 +119,49 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import Swal from "sweetalert2";
+
+const body = ref({
+  firstName: "",
+  lastName: "",
+  companyName: "",
+  phone: "",
+  country: "",
+  email: "",
+  descriptionProject: "",
+});
+
+async function addProject() {
+  try {
+    console.log("Datos enviados", body.value);
+
+    // Enviar datos al servidor
+    const project = await fetch("http://localhost:9000/create/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body.value),
+    });
+
+    const response = await project.json();
+
+    if (response.status === 201 || response.error === false) {
+      Swal.fire({
+        title: "Éxito",
+        text: "Nuestro equipo se pondra en contacto contigo",
+        icon: "success",
+        position: "top-end", // Coloca la alerta en la parte superior derecha
+        showConfirmButton: false, // Opcional, oculta el botón de confirmación
+        timer: 3000, // Opcional, cierra automáticamente después de 3 segundos
+        toast: true, // Cambia el estilo de la alerta a tipo "toast"
+      });
+    }
+  } catch (err) {
+    console.error("Occurred error", err);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
